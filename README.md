@@ -3,13 +3,20 @@
 ## Data Extraction
 Extracted Sentiel-2 SR band data (Red, Green, Blue, NIR, SWIR) of 3 lakes in the Canadian Rocky Monunatin using Climate Engine Research Application.
 
-## Preprocessing
+## Procedure
+**Preprocessing**
 1. Filter out data when RGB values < NIR and SWIR values.
 2. Calculate Remote Sensing Reflectance (Rrs) -- divide all values by PI.
 
-## Processing
+**Processing**
 1. Calculate chromaticity coordinates (only x, y needed) using equations 1-5 found in https://www.mdpi.com/2072-4292/10/2/180. To adjust for one blue band rather than two, use coefficents for Sentiel-2 10m from https://doi.org/10.3390/rs10020180. Equations involve calculating normalize trisimulus values (X,Y,Z) then chromaticity coordinates (x,y,z).
 2. Dominant Wavelength -- Manually add values to calculator (https://luminus-cie1931-demo.anvil.app/)
+
+## color.py
+* Calculates chromaticity coordinates (x, y)
+* Input: csv file containing dates and RGB values
+* Output: csv file containg dates and chromaticity coordinates
+
 
 ## Resources:
 Equations from:

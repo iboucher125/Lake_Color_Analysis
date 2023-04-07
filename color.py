@@ -1,5 +1,6 @@
 import math
 import sys
+import matplotlib.pyplot as plt 
 
 def chromaticity(R, G, B):
     # Calculate Remote Sensing Reflectance (Rrs)
@@ -19,8 +20,8 @@ def chromaticity(R, G, B):
     return x, y
 
 def main():
-    input = open(sys.argv[1], 'r',)
-    output = open(sys.argv[2], 'w')
+    input = open("./data/" + sys.argv[1], 'r',)
+    output = open("./data/" + sys.argv[2], 'w')
     input.readline()
     for line in input:
         data = line.split(',')
@@ -28,7 +29,6 @@ def main():
         G = float(data[2])
         R = float(data[3])
         x, y = chromaticity(R, G, B)
-        print(x, y)
         output.write(str(data[0]) + "," + str(x) + "," + str(y) + "\n")
     input.close()
     output.close()

@@ -1,4 +1,6 @@
 # Lake Color Analysis
+## Summary
+This project was used to analyze the relationship between dominate wavelength and turbidity data from 3 lakes in the Canadian Rocky Mountians: Opabin, Peyto, and Zigadenus.
 
 ## Data Extraction
 Extracted Sentiel-2 SR band data (Red, Green, Blue, NIR, SWIR) of 3 lakes in the Canadian Rocky Monunatin using Climate Engine Research Application.
@@ -16,6 +18,11 @@ Extracted Sentiel-2 SR band data (Red, Green, Blue, NIR, SWIR) of 3 lakes in the
 * Calculates chromaticity coordinates (x, y)
 * Input: csv file containing dates and RGB values
 * Output: csv file containg dates and chromaticity coordinates
+
+## plot.py
+* Generates graphs for both dominante wavelngth and turbidity time series
+* Input: csv file containing dates (Month, year), dominate wavelength, and turbidity
+* Output: Graph in PNG file format
 
 
 ## Resources:

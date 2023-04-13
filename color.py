@@ -2,6 +2,9 @@ import math
 import sys
 import matplotlib.pyplot as plt 
 
+'''
+Calculates chromaticity coordinates (x,y) from RGB values
+'''
 def chromaticity(R, G, B):
     # Calculate Remote Sensing Reflectance (Rrs)
     RrsR = R/math.pi

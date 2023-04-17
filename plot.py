@@ -114,11 +114,34 @@ def makeDWTimeGraph(data, lake_name):
         x = np.array(data[key]['Julian'])
         y = np.array(data[key]['domwave'])
         list=zip(*sorted(zip(*(x,y))))
-        plt.plot(*list, label=key)
+        plt.plot(*list, label=key, marker = 'o')
         plt.xlabel('Julian Date')
         plt.ylabel('Dominate Wavelength (nm)')
         plt.legend()
         plt.savefig("./figures/" + lake_name + "_DWTime.png")
+
+def makeMultiDWTimeGraph(year, data1, lake_name1, data2, lake_name2, data3, lake_name3):
+        x1 = np.array(data1[year]['Julian'])
+        y1 = np.array(data1[year]['domwave'])
+        list1=zip(*sorted(zip(*(x1,y1))))
+        plt.plot(*list1, label=lake_name1, marker = 'o')
+
+        if year in data2:
+            x2 = np.array(data2[year]['Julian'])
+            y2 = np.array(data2[year]['domwave'])
+            list2=zip(*sorted(zip(*(x2,y2))))
+            plt.plot(*list2, label=lake_name2, marker = 'o')
+
+        if year in data3:
+            x3 = np.array(data3[year]['Julian'])
+            y3 = np.array(data3[year]['domwave'])
+            list3=zip(*sorted(zip(*(x3,y3))))
+            plt.plot(*list3, label=lake_name3, marker = 'o')
+
+        plt.xlabel('Julian Date')
+        plt.ylabel('Dominate Wavelength (nm)')
+        plt.legend()
+        plt.savefig("./figures/multi_" + str(year) + "_DWTime.png")
 
 '''
 Generates duel axis graph of dominate wavelength and turbidity over time for a given lake.
@@ -129,14 +152,14 @@ def makeDuel(data, lake_name):
         x = np.array(data[key]['Julian'])
         y1 = np.array(data[key]['domwave'])
         y2 = np.array(data[key]['turbidity'])
-        list1=zip(*sorted(zip(*(x,y1))))
         list2=zip(*sorted(zip(*(x,y2))))
 
         fig, ax1 = plt.subplots(figsize=(8, 6))
         ax2 = ax1.twinx()
 
-        ax1.plot(*list1, label="Dominate Wavelength", color='blue')
-        ax2.plot(*list2, label="Tubidity", color='orange')
+        # ax1.plot(*list1, label="Dominate Wavelength", color='blue')
+        ax1.bar(x, height= y1-min(y1), bottom=min(y1), label="Dominate Wavelength")
+        ax2.plot(*list2, label="Tubidity", color='orange', marker = 'o')
 
         ax1.set_xlabel("Julian Date")
         ax1.set_ylabel("Dominate Wavelength (nm)")
@@ -146,6 +169,7 @@ def makeDuel(data, lake_name):
         ax2.tick_params(axis="y")
 
         fig.legend(loc="upper right")
+        plt.ylim(min(y2), max(y2))
         plt.savefig("./figures/" + lake_name + "_" + str(key) + "_DWTur.png")
     
 
@@ -164,6 +188,7 @@ def main():
     lake_name3 = sys.argv[6]
 
     '''---Uncomment funciton calls individually to generate graphs to avoid incorrect plotting---'''
+
     '''Graph of Dominate Wavelength X Tubidity across three lakes'''
     # makeDWTurGraph(data1, lake_name1, data2, lake_name2, data3, lake_name3)
     '''Graph of Time x Dominate Wavelength for a given lake'''
@@ -174,6 +199,12 @@ def main():
     # makeDuel(data1, lake_name1)
     # makeDuel(data2, lake_name2)
     # makeDuel(data3, lake_name3)
+
+    '''Graph of Time x Dominate Wavelength of all lakes for a given year'''
+    # makeMultiDWTimeGraph(2019, data1, lake_name1, data2, lake_name2, data3, lake_name3)
+    # makeMultiDWTimeGraph(2020, data1, lake_name1, data2, lake_name2, data3, lake_name3)
+    # makeMultiDWTimeGraph(2021, data1, lake_name1, data2, lake_name2, data3, lake_name3)
+    # makeMultiDWTimeGraph(2022, data1, lake_name1, data2, lake_name2, data3, lake_name3)
 
     input1.close()
     input2.close()

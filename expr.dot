@@ -1,0 +1,15 @@
+graph Expression {
+	node1927950199[label="*"];
+	node1927950199 -- node868693306;
+	node1927950199 -- node1746572565;
+	node868693306[label="+"];
+	node868693306 -- node989110044;
+	node868693306 -- node424058530;
+	node989110044[label="*"];
+	node989110044 -- node321001045;
+	node989110044 -- node791452441;
+	node321001045[label=0];
+	node791452441[label=x];
+	node424058530[label=4];
+	node1746572565[label=y];
+}

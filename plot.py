@@ -52,57 +52,41 @@ def makeDWTurGraph(data1, lake_name1, data2, lake_name2, data3, lake_name3):
     x1 = np.array(lake_1_tur)
     y1 = np.array(lake_1_dw)
 
-    # ylog_data1 = np.log(y1)
-    # curve_fit1 = np.polyfit(x1, ylog_data1, 1)
-
-    # # Convert the polynomial back into an exponential
-    # a1 = np.exp(curve_fit1[1])
-    # b1 = curve_fit1[0]
-    # x_fitted1 = np.linspace(np.min(x1), np.max(x1), 100)
-    # y_fitted1 = a1 * np.exp(b1 * x_fitted1)
-    # plt.plot(x_fitted1, y_fitted1, 'k', label=lake_name1)
-
     #add points to plot
-    plt.scatter(x1, y1, label=lake_name1)
+    plt.scatter(x1, y1, color='tab:blue', label=lake_name1)
 
     # LAKE #2
     #define data
     x2 = np.array(lake_2_tur)
     y2 = np.array(lake_2_dw)
 
-    # ylog_data2 = np.log(y2)
-    # curve_fit2 = np.polyfit(x2, ylog_data2, 1)
-
-    # # Convert the polynomial back into an exponential
-    # a2 = np.exp(curve_fit2[1])
-    # b2 = curve_fit2[0]
-    # x_fitted2 = np.linspace(np.min(x2), np.max(x2), 100)
-    # y_fitted2 = a2 * np.exp(b2 * x_fitted2)
-    # plt.plot(x_fitted2, y_fitted2, 'k', label=lake_name2)
+    # # DomWave=constant + b1*ln(turbidity).
+    y2_new = []
+    for i in range(len(y2)):
+        y2_new.append(500.697 + 27.054*np.log(x2[i]))
+    list2=zip(*sorted(zip(*(x2,y2_new))))
+    plt.plot(*list2, color='orange')
 
     #add points to plot
-    plt.scatter(x2, y2, label=lake_name2)
+    plt.scatter(x2, y2, color='orange', label=lake_name2)
 
     # LAKE #3
     #define data
     x3 = np.array(lake_3_tur)
     y3 = np.array(lake_3_dw)
 
-    # ylog_data3 = np.log(y3)
-    # curve_fit3 = np.polyfit(x3, ylog_data3, 1)
-
-    # # Convert the polynomial back into an exponential
-    # a3 = np.exp(curve_fit3[1])
-    # b3 = curve_fit3[0]
-    # x_fitted3 = np.linspace(np.min(x3), np.max(x3), 100)
-    # y_fitted3 = a3 * np.exp(b3 * x_fitted3)
-    # plt.plot(x_fitted3, y_fitted3, 'k', label=lake_name3)
+    # # DomWave=constant + b1*ln(turbidity).
+    y3_new = []
+    for i in range(len(y2)):
+        y3_new.append(501.438 + 23.346*np.log(x3[i]))
+    list3=zip(*sorted(zip(*(x3,y3_new))))
+    plt.plot(*list3, color='green')
 
     #add points to plot
-    plt.scatter(x3, y3, label=lake_name3)
+    plt.scatter(x3, y3, color='green', label=lake_name3)
    
-    plt.legend()
-    plt.xlabel('Tubidity')
+    # plt.legend()
+    plt.xlabel('Tubidity (NTU)')
     plt.ylabel('Dominate Wavelength (nm)')
     plt.savefig("./figures/DWTur.png")
 
@@ -111,12 +95,13 @@ Generates graph of Time x Dominate Wavelength for a given lake.
 '''
 def makeDWTimeGraph(data, lake_name):
     plt.title(label=lake_name, fontsize=20, color='black')
+    colors = {2019: 'red', 2020: 'tab:blue', 2021:'orange', 2022: 'green'}
     for key in data:
         x = np.array(data[key]['Julian'])
         y = np.array(data[key]['domwave'])
         list=zip(*sorted(zip(*(x,y))))
-        plt.plot(*list, label=key, marker = 'o')
-    plt.xlabel('Julian Date')
+        plt.plot(*list, color=colors[key], label=key, marker = 'o')
+    plt.xlabel('Ordinal Date')
     plt.ylabel('Dominate Wavelength (nm)')
     # plt.legend(bbox_to_anchor = (1.25, 0.6), loc='center right')
     # plt.tight_layout()
@@ -141,7 +126,7 @@ def makeMultiDWTimeGraph(year, data1, lake_name1, data2, lake_name2, data3, lake
             list3=zip(*sorted(zip(*(x3,y3))))
             plt.plot(*list3, color='green', label=lake_name3, marker = 'o')
 
-        plt.xlabel('Julian Date')
+        plt.xlabel('Ordinal Date')
         plt.ylabel('Dominate Wavelength (nm)')
         # plt.legend(bbox_to_anchor = (1.53, 0.6), loc='center right')
         # plt.tight_layout()
@@ -154,18 +139,27 @@ def makeMultiDWTimeSigGraph(year, data2, lake_name2, data3, lake_name3):
             y2 = np.array(data2[year]['domwave'])
             list2=zip(*sorted(zip(*(x2,y2))))
             plt.plot(*list2, color='orange', label=lake_name2, marker = 'o')
-
         if year in data3:
             x3 = np.array(data3[year]['Julian'])
             y3 = np.array(data3[year]['domwave'])
             list3=zip(*sorted(zip(*(x3,y3))))
             plt.plot(*list3, color='green', label=lake_name3, marker = 'o')
 
-        plt.xlabel('Julian Date')
+        plt.xlabel('Ordinal Date')
         plt.ylabel('Dominate Wavelength (nm)')
         # plt.legend(bbox_to_anchor = (1.53, 0.6), loc='center right')
         # plt.tight_layout()
         plt.savefig("./figures/multi_" + str(year) + "_DWTimeSig.png")
+
+def makeSingleGraph(year, data3, lake_name3):
+        x3 = np.array(data3[year]['Julian'])
+        y3 = np.array(data3[year]['domwave'])
+        list3=zip(*sorted(zip(*(x3,y3))))
+        plt.plot(*list3, color='green', label=lake_name3, marker = 'o')
+
+        plt.xlabel('Ordinal Date')
+        plt.ylabel('Dominate Wavelength (nm)')
+        plt.savefig("./figures/single_" + str(lake_name3) + "_DWTimeSig.png")
 
 
 '''
@@ -186,7 +180,7 @@ def makeDuel(data, lake_name):
         ax1.bar(x, height= y1-min(y1), bottom=min(y1), label="Dominate Wavelength")
         ax2.plot(*list2, label="Tubidity", color='orange', marker = 'o')
 
-        ax1.set_xlabel("Julian Date")
+        ax1.set_xlabel("Ordinal Date")
         ax1.set_ylabel("Dominate Wavelength (nm)")
         ax1.tick_params(axis="y")
 
@@ -235,10 +229,12 @@ def main():
 
     '''What is driving color? --> 1 graph'''
     # makeDWTurGraph(data1, lake_name1, data2, lake_name2, data3, lake_name3)
+
     '''Variation amoung years within a lake --> 3 graphs'''
     # makeDWTimeGraph(data1, lake_name1)
     # makeDWTimeGraph(data2, lake_name2)
     # makeDWTimeGraph(data3, lake_name3)
+
     '''Duel axis graph of dominate wavelength and turbidity over time'''
     # makeDuel(data1, lake_name1)
     # makeDuel(data2, lake_name2)
@@ -254,8 +250,10 @@ def main():
     # print(getCorrelation(data1, data2, data3))
 
     '''Significant'''
-    makeMultiDWTimeSigGraph(2021, data2, lake_name2, data3, lake_name3)
+    # makeMultiDWTimeSigGraph(2021, data2, lake_name2, data3, lake_name3)
     # makeMultiDWTimeSigGraph(2022, data2, lake_name2, data3, lake_name3)
+
+    # makeSingleGraph(2022, data3, lake_name3)
 
     input1.close()
     input2.close()
